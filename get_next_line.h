@@ -6,14 +6,13 @@
 /*   By: chchoi <chchoi@student.42gyeongsan.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/31 14:52:51 by chchoi            #+#    #+#             */
-/*   Updated: 2026/10/31 14:53:00 by chchoi           ###   ########.fr       */
+/*   Updated: 2026/11/01 17:33:43 by chchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_GET_NEXT_LINE_H
 # define FT_GET_NEXT_LINE_H
 
-# define BUFFSIZE 1024
 
 # include <stdlib.h>
 # include <unistd.h>

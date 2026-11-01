@@ -6,7 +6,7 @@
 /*   By: chchoi <chchoi@student.42gyeongsan.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/31 14:52:43 by chchoi            #+#    #+#             */
-/*   Updated: 2026/10/31 14:53:35 by chchoi           ###   ########.fr       */
+/*   Updated: 2026/11/01 17:40:30 by chchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ char	*my_checknullstream(char *b_stream, ssize_t len)
 
 char	*my_strnchr(const char *str, ssize_t len, char chr)
 {
+	char *ptr;
 	ssize_t	i;
 
+	ptr = (char*)str;
 	i = 0;
 	while (i < len)
 	{
-		if (str[i] == chr)
-			return (&(str[i]));
+		if (ptr[i] == chr)
+			return (&(ptr[i]));
 		++i;
 	}
-	return (&(str[i - 1]));
+	return (&(ptr[i - 1]));
 }
 
 char	*my_strndup(const char *start_ptr, const char *end_ptr)
@@ -47,13 +49,14 @@ char	*my_strndup(const char *start_ptr, const char *end_ptr)
 	ssize_t	len;
 
 	len = end_ptr - start_ptr;
-	n_str = malloc(len + 1);
+	n_str = malloc(len + 2);
 	i = 0;
 	while (i <= len)
 	{
 		n_str[i] = start_ptr[i];
 		++i;
 	}
+	n_str[i] = '\0';
 	return (n_str);
 }
 
