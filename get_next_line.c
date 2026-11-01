@@ -6,7 +6,7 @@
 /*   By: chchoi <chchoi@student.42gyeongsan.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/31 14:52:35 by chchoi            #+#    #+#             */
-/*   Updated: 2026/11/01 16:55:59 by chchoi           ###   ########.fr       */
+/*   Updated: 2026/11/02 07:52:00 by chchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,24 @@ char	*get_next_line(int fd)
 	ssize_t		len;
 	char		*new_str;
 
-	begin_cursor = my_checknullstream(buff, BUFFER_SIZE);
-	if (*begin_cursor == '\0')
+	new_str = NULL;
+	end_cursor = buff;
+	while (new_str == NULL || new_str[my_strlen(new_str)-1] != '\n')
 	{
-		len = read(fd, buff, BUFFER_SIZE);
-		if (len <= 0)
+		begin_cursor = my_checknullstream(buff, BUFFER_SIZE);
+		if (*begin_cursor == '\0')
+		{
+			len = read(fd, buff, BUFFER_SIZE);
+			if (len <= 0)
+				break;
+			begin_cursor = buff;
+		}
+		end_cursor = my_strnchr(begin_cursor, &(buff[BUFFER_SIZE - 1])
+				- begin_cursor, '\n');
+		my_strpdup(begin_cursor, end_cursor, &new_str);
+		if (new_str == NULL)
 			return (NULL);
-		begin_cursor = buff;
+		my_bzerorange(begin_cursor, end_cursor);
 	}
-	end_cursor = my_strnchr(begin_cursor, &(buff[BUFFER_SIZE - 1])
-			- begin_cursor, '\n');
-	new_str = my_strndup(begin_cursor, end_cursor);
-	if (new_str == NULL)
-		return (NULL);
-	my_bzerorange(begin_cursor, end_cursor);
 	return (new_str);
 }

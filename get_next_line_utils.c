@@ -6,7 +6,7 @@
 /*   By: chchoi <chchoi@student.42gyeongsan.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/31 14:52:43 by chchoi            #+#    #+#             */
-/*   Updated: 2026/11/01 17:40:30 by chchoi           ###   ########.fr       */
+/*   Updated: 2026/11/02 07:51:33 by chchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,45 @@ char	*my_checknullstream(char *b_stream, ssize_t len)
 
 char	*my_strnchr(const char *str, ssize_t len, char chr)
 {
-	char *ptr;
+	char	*ptr;
 	ssize_t	i;
 
-	ptr = (char*)str;
+	ptr = (char *)str;
 	i = 0;
-	while (i < len)
+	while (i <= len)
 	{
-		if (ptr[i] == chr)
+		if (ptr[i] == chr || ptr[i] == '\0')
 			return (&(ptr[i]));
 		++i;
 	}
 	return (&(ptr[i - 1]));
 }
 
-char	*my_strndup(const char *start_ptr, const char *end_ptr)
+void	my_strpdup(const char *start_ptr, const char *end_ptr, char **new_str)
 {
 	char	*n_str;
 	ssize_t	i;
+	ssize_t	j;
 	ssize_t	len;
 
-	len = end_ptr - start_ptr;
-	n_str = malloc(len + 2);
+	len = my_strlen(*new_str);
+	n_str = malloc(end_ptr - start_ptr + 2 + len);
 	i = 0;
-	while (i <= len)
+	while (*new_str != NULL && i < len)
 	{
-		n_str[i] = start_ptr[i];
+		n_str[i] = (*new_str)[i];
 		++i;
 	}
-	n_str[i] = '\0';
-	return (n_str);
+	if (*new_str != NULL)
+		free(*new_str);
+	j = 0;
+	while (j <= end_ptr - start_ptr)
+	{
+		n_str[i + j] = start_ptr[j];
+		++j;
+	}
+	n_str[i + j] = '\0';
+	*new_str = n_str;
 }
 
 void	my_bzerorange(char *start_ptr, char *end_ptr)
@@ -72,6 +81,18 @@ void	my_bzerorange(char *start_ptr, char *end_ptr)
 		start_ptr[i] = '\0';
 		++i;
 	}
+}
+
+ssize_t	my_strlen(const char *str)
+{
+	ssize_t	i;
+
+	if (str == NULL)
+		return (0);
+	i = 0;
+	while (str[i] != '\0')
+		++i;
+	return (i);
 }
 
 // test
