@@ -6,7 +6,7 @@
 /*   By: chchoi <chchoi@student.42gyeongsan.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/31 14:52:51 by chchoi            #+#    #+#             */
-/*   Updated: 2026/11/02 07:51:31 by chchoi           ###   ########.fr       */
+/*   Updated: 2026/11/02 11:20:37 by chchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
 # include <stdlib.h>
 # include <unistd.h>
-char	*get_next_line(int fd);
 
-char	*my_checknullstream(char *b_stream, ssize_t len);
+char	*get_next_line(int fd);
 char	*my_strnchr(const char *str, ssize_t len, char chr);
-void	my_strpdup(const char *start_ptr, const char *end_ptr, char **new_str);
-void	my_bzerorange(char *start_ptr, char *end_ptr);
-ssize_t	my_strlen(const char *str);
+char	*my_strpdup(char *start_ptr, char *end_ptr, char **new_str);
+ssize_t	my_checknullstream(char *buff, int fd, char **str);
+ssize_t	my_release_swap(char *dst, char **src, ssize_t f_len);
+ssize_t	my_len(const char *str);
 
 #endif

@@ -6,24 +6,30 @@
 /*   By: chchoi <chchoi@student.42gyeongsan.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/31 14:52:43 by chchoi            #+#    #+#             */
-/*   Updated: 2026/11/02 07:51:33 by chchoi           ###   ########.fr       */
+/*   Updated: 2026/11/02 11:18:28 by chchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*my_checknullstream(char *b_stream, ssize_t len)
+ssize_t	my_checknullstream(char *buff, int fd, char **str)
 {
 	ssize_t	i;
+	ssize_t	len;
 
 	i = 0;
-	while (i < len)
+	while (i < BUFFER_SIZE)
 	{
-		if (b_stream[i] != '\0')
-			return (&(b_stream[i]));
+		if (buff[i] != '\0')
+		{
+			(*str) = &(buff[i]);
+			return (BUFFER_SIZE - i);
+		}
 		++i;
 	}
-	return (&(b_stream[i - 1]));
+	len = read(fd, buff, BUFFER_SIZE);
+	(*str) = buff;
+	return (len);
 }
 
 char	*my_strnchr(const char *str, ssize_t len, char chr)
@@ -42,48 +48,49 @@ char	*my_strnchr(const char *str, ssize_t len, char chr)
 	return (&(ptr[i - 1]));
 }
 
-void	my_strpdup(const char *start_ptr, const char *end_ptr, char **new_str)
+char	*my_strpdup(char *start_ptr, char *end_ptr, char **new_str)
 {
 	char	*n_str;
 	ssize_t	i;
 	ssize_t	j;
 	ssize_t	len;
 
-	len = my_strlen(*new_str);
+	len = my_len(*new_str);
 	n_str = malloc(end_ptr - start_ptr + 2 + len);
-	i = 0;
-	while (*new_str != NULL && i < len)
+	if (n_str == NULL)
 	{
-		n_str[i] = (*new_str)[i];
-		++i;
+		if (*new_str != NULL)
+			free(*new_str);
+		return (NULL);
 	}
+	i = 0;
 	if (*new_str != NULL)
-		free(*new_str);
+		i = my_release_swap(n_str, new_str, len);
 	j = 0;
 	while (j <= end_ptr - start_ptr)
 	{
 		n_str[i + j] = start_ptr[j];
-		++j;
+		start_ptr[j++] = '\0';
 	}
 	n_str[i + j] = '\0';
-	*new_str = n_str;
+	return (n_str);
 }
 
-void	my_bzerorange(char *start_ptr, char *end_ptr)
+ssize_t	my_release_swap(char *dst, char **src, ssize_t f_len)
 {
 	ssize_t	i;
-	ssize_t	len;
 
 	i = 0;
-	len = end_ptr - start_ptr;
-	while (i <= len)
+	while (i < f_len)
 	{
-		start_ptr[i] = '\0';
+		dst[i] = (*src)[i];
 		++i;
 	}
+	free(*src);
+	return (i);
 }
 
-ssize_t	my_strlen(const char *str)
+ssize_t	my_len(const char *str)
 {
 	ssize_t	i;
 
